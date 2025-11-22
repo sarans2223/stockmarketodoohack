@@ -23,16 +23,22 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-    // Hardcoded credentials for demonstration
-    if (email === 'manager@example.com' && password === 'password') {
-      router.push('/dashboard');
+    const storedUsers = localStorage.getItem('users');
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+    
+    const foundUser = users.find((user: any) => user.email === email);
+
+    if (!foundUser) {
+      setError('Account not found. Please sign up.');
+    } else if (foundUser.password !== password) {
+      setError('Invalid credentials. Please try again.');
     } else {
-      setError('Invalid email or password. Please try again.');
+      router.push('/dashboard');
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4" suppressHydrationWarning>
       <Card className="mx-auto w-full max-w-sm">
         <CardHeader className="text-center">
             <div className="inline-block bg-primary text-primary-foreground p-3 rounded-lg mb-4">
@@ -42,7 +48,7 @@ export default function LoginPage() {
           <CardDescription>Enter your credentials to access your inventory</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4" suppressHydrationWarning>
+          <form onSubmit={handleLogin} className="space-y-4">
             {error && (
                 <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />

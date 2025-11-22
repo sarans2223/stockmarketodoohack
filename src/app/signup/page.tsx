@@ -1,8 +1,10 @@
+
 'use client';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, UserPlus } from 'lucide-react';
+import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,14 +18,39 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [error, setError] = React.useState('');
 
   const handleCreateAccount = (e: React.FormEvent) => {
     e.preventDefault();
-    // Your teammate will add the actual account creation logic here.
+    setError('');
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    const storedUsers = localStorage.getItem('users');
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+
+    const userExists = users.some((user: any) => user.email === email);
+    if (userExists) {
+      setError('An account with this email already exists.');
+      return;
+    }
+
+    const newUser = { email, password };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+
     toast({
       title: 'Account Created Successfully!',
       description: 'Please log in with your new credentials.',
@@ -49,6 +76,13 @@ export default function SignupPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleCreateAccount} className="space-y-4" suppressHydrationWarning>
+            {error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Signup Failed</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
             <div className="space-y-2">
               <Label htmlFor="full-name">Full Name</Label>
               <Input id="full-name" placeholder="John Doe" required />
@@ -60,15 +94,29 @@ export default function SignupPage() {
                 type="email"
                 placeholder="manager@example.com"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirm-password">Confirm Password</Label>
-              <Input id="confirm-password" type="password" required />
+              <Input 
+                id="confirm-password" 
+                type="password" 
+                required 
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
