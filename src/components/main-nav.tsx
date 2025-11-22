@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Boxes, Home, Package, PackageCheck, PackagePlus, Shuffle, SlidersHorizontal } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, Shuffle, SlidersHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -26,27 +26,27 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
     {
       href: `/dashboard/receipts`,
       label: "Receipts",
-      active: pathname === `/dashboard/receipts`,
+      active: pathname.startsWith(`/dashboard/receipts`),
       icon: <PackagePlus className="h-4 w-4" />,
       badge: "12",
     },
     {
       href: `/dashboard/deliveries`,
       label: "Deliveries",
-      active: pathname === `/dashboard/deliveries`,
+      active: pathname.startsWith(`/dashboard/deliveries`),
       icon: <PackageCheck className="h-4 w-4" />,
       badge: "8",
     },
     {
       href: `/dashboard/transfers`,
       label: "Transfers",
-      active: pathname === `/dashboard/transfers`,
+      active: pathname.startsWith(`/dashboard/transfers`),
       icon: <Shuffle className="h-4 w-4" />,
     },
     {
       href: `/dashboard/adjustments`,
       label: "Adjustments",
-      active: pathname === `/dashboard/adjustments`,
+      active: pathname.startsWith(`/dashboard/adjustments`),
       icon: <SlidersHorizontal className="h-4 w-4" />,
     },
   ];
@@ -58,10 +58,10 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
           key={route.href}
           href={route.href}
           className={cn(
-            "flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+            "flex items-center space-x-3 rounded-lg px-3 py-2 text-lg font-medium transition-colors hover:bg-muted/50",
             route.active
               ? "bg-primary text-primary-foreground"
-              : "text-muted-foreground hover:bg-muted/50"
+              : "text-muted-foreground"
           )}
         >
           {route.icon}
