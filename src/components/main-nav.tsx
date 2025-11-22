@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, PackageCheck, PackagePlus, Shuffle, SlidersHorizontal, History, Settings, Warehouse } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, Shuffle, SlidersHorizontal, History, Settings, Warehouse, User, LogOut } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -69,6 +69,25 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       active: pathname.startsWith(`/dashboard/settings/warehouse`),
       icon: <Warehouse className="h-4 w-4" />,
     },
+    {
+        type: 'separator'
+    },
+     {
+        type: 'heading',
+        label: 'Profile'
+    },
+    {
+        href: '/dashboard/profile',
+        label: 'My Profile',
+        active: pathname.startsWith('/dashboard/profile'),
+        icon: <User className="h-4 w-4" />
+    },
+    {
+        href: '/',
+        label: 'Logout',
+        active: false,
+        icon: <LogOut className="h-4 w-4" />
+    }
   ];
 
   return (
