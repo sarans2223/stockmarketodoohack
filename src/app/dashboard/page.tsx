@@ -62,21 +62,25 @@ export default function DashboardPage() {
   const [filters, setFilters] = React.useState({
     type: "",
     status: "",
+    category: "",
+    location: "",
   });
 
-  const handleFilterChange = (key: "type" | "status", value: string) => {
+  const handleFilterChange = (key: "type" | "status" | "category" | "location", value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value === prev[key] ? "" : value }));
   };
 
   const clearFilters = () => {
-    setFilters({ type: "", status: "" });
+    setFilters({ type: "", status: "", category: "", location: "" });
   };
 
   const filteredActivity = React.useMemo(() => {
     return recentActivity.filter((activity: Activity) => {
       const typeMatch = filters.type ? activity.type === filters.type : true;
       const statusMatch = filters.status ? activity.status === filters.status : true;
-      return typeMatch && statusMatch;
+      const categoryMatch = filters.category ? activity.category === filters.category : true;
+      const locationMatch = filters.location ? activity.location === filters.location : true;
+      return typeMatch && statusMatch && categoryMatch && locationMatch;
     });
   }, [filters]);
 

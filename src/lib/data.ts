@@ -20,13 +20,13 @@ export const inventoryChartData = [
 ];
 
 export const recentActivity: Activity[] = [
-    { id: 'REC-001', type: 'Receipt', date: '2025-07-28', status: 'Done', details: 'Received 100 units of Steel Coils from Supplier A.' },
-    { id: 'DEL-003', type: 'Delivery', date: '2025-07-28', status: 'Waiting', details: 'Delivery of 20 chairs to Customer B.' },
-    { id: 'TRN-002', type: 'Transfer', date: '2025-07-27', status: 'Ready', details: 'Transferring 50kg of bolts from Main Warehouse to Production Line 2.' },
-    { id: 'ADJ-001', type: 'Adjustment', date: '2025-07-26', status: 'Done', details: 'Adjusted -3kg of damaged Steel Coils.' },
-    { id: 'REC-002', type: 'Receipt', date: '2025-07-25', status: 'Done', details: 'Received 500 units of Screws from Supplier C.' },
-    { id: 'DEL-004', type: 'Delivery', date: '2025-07-29', status: 'Draft', details: 'Planning delivery for 10 desks.' },
-    { id: 'TRN-003', type: 'Transfer', date: '2025-07-29', status: 'Canceled', details: 'Canceled transfer of 200 units of bolts.' },
+    { id: 'REC-001', type: 'Receipt', date: '2025-07-28', status: 'Done', details: 'Received 100 units of Steel Coils from Supplier A.', category: 'Raw Materials', location: 'Warehouse A' },
+    { id: 'DEL-003', type: 'Delivery', date: '2025-07-28', status: 'Waiting', details: 'Delivery of 20 chairs to Customer B.', category: 'Finished Goods', location: 'Main Warehouse' },
+    { id: 'TRN-002', type: 'Transfer', date: '2025-07-27', status: 'Ready', details: 'Transferring 50kg of bolts from Main Warehouse to Production Line 2.', category: 'Components', location: 'Production Line 2' },
+    { id: 'ADJ-001', type: 'Adjustment', date: '2025-07-26', status: 'Done', details: 'Adjusted -3kg of damaged Steel Coils.', category: 'Raw Materials', location: 'Warehouse A' },
+    { id: 'REC-002', type: 'Receipt', date: '2025-07-25', status: 'Done', details: 'Received 500 units of Screws from Supplier C.', category: 'Components', location: 'Warehouse B' },
+    { id: 'DEL-004', type: 'Delivery', date: '2025-07-29', status: 'Draft', details: 'Planning delivery for 10 desks.', category: 'Finished Goods', location: 'Main Warehouse' },
+    { id: 'TRN-003', type: 'Transfer', date: '2025-07-29', status: 'Canceled', details: 'Canceled transfer of 200 units of bolts.', category: 'Components', location: 'Main Warehouse' },
 ];
 
 export const products: Product[] = [

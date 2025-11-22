@@ -1,3 +1,4 @@
+
 export type NavItem = {
   title: string;
   href: string;
@@ -20,6 +21,8 @@ export type Activity = {
     date: string;
     status: 'Draft' | 'Waiting' | 'Ready' | 'Done' | 'Canceled';
     details: string;
+    category?: string;
+    location?: string;
 };
 
 export type NavRoute = {
