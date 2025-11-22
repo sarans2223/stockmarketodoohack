@@ -1,6 +1,25 @@
+
+'use client';
+
+import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AddProductForm } from '@/app/dashboard/products/add-product-form';
+import type { Product } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CreateProductPage() {
+    const { toast } = useToast();
+
+    const handleAddProduct = (newProduct: Omit<Product, 'id'>) => {
+        // In a real app, you'd save this to a database.
+        // For now, we'll just show a toast notification.
+        console.log('New product added:', newProduct);
+         toast({
+            title: "Product Created",
+            description: `${newProduct.name} has been created and is ready to be managed.`,
+        });
+    }
+
   return (
     <>
       <div className="mb-6">
@@ -15,7 +34,7 @@ export default function CreateProductPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p>Create product form will be here.</p>
+            <AddProductForm onProductAdd={handleAddProduct} />
         </CardContent>
       </Card>
     </>

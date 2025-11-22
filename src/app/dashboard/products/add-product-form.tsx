@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import type { Product } from "@/lib/types";
 
 const formSchema = z.object({
@@ -34,7 +33,7 @@ const formSchema = z.object({
   }),
   stock: z.coerce.number().min(0, {
     message: "Stock cannot be negative.",
-  }),
+  }).optional(),
 });
 
 type AddProductFormProps = {
@@ -42,7 +41,6 @@ type AddProductFormProps = {
 }
 
 export function AddProductForm({ onProductAdd }: AddProductFormProps) {
-  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,11 +53,11 @@ export function AddProductForm({ onProductAdd }: AddProductFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    onProductAdd(values);
-    toast({
-      title: "Product Added",
-      description: `${values.name} has been added to your products.`,
-    });
+    const productData = {
+        ...values,
+        stock: values.stock ?? 0, // Ensure stock is a number
+    };
+    onProductAdd(productData);
     form.reset();
   }
 
@@ -128,13 +126,13 @@ export function AddProductForm({ onProductAdd }: AddProductFormProps) {
                 <Input type="number" {...field} />
               </FormControl>
               <FormDescription>
-                The starting quantity of this product.
+                The starting quantity of this product (optional).
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Add Product</Button>
+        <Button type="submit" className="w-full">Create Product</Button>
       </form>
     </Form>
   );
