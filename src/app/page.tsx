@@ -3,20 +3,32 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Boxes } from "lucide-react";
+import { Boxes, AlertCircle } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState('');
+
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Your teammate can add authentication logic here.
-    router.push('/dashboard');
+    setError('');
+
+    // Hardcoded credentials for demonstration
+    if (email === 'manager@example.com' && password === 'password') {
+      router.push('/dashboard');
+    } else {
+      setError('Invalid email or password. Please try again.');
+    }
   };
 
   return (
@@ -31,9 +43,25 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4" suppressHydrationWarning>
+            {error && (
+                <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Login Failed</AlertTitle>
+                    <AlertDescription>
+                        {error}
+                    </AlertDescription>
+                </Alert>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="manager@example.com" required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="manager@example.com" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <div className="flex items-center">
@@ -42,7 +70,14 @@ export default function LoginPage() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="password"
+              />
             </div>
             <Button type="submit" className="w-full">
               Login
