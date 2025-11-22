@@ -1,7 +1,7 @@
 
 "use client";
 
-import { ArrowUpRight, Package, PackageCheck, PackagePlus, Clock, XCircle, Shuffle } from "lucide-react";
+import { Package, PackageCheck, PackagePlus, Clock, XCircle, Shuffle, BarChart2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -23,77 +23,72 @@ import {
   ChartTooltipContent,
   ChartConfig,
 } from "@/components/ui/chart";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { kpiData, inventoryChartData, recentActivity } from "@/lib/data";
 
-const chartConfig = {
-  incoming: {
+const inventoryFlowChartConfig = {
+  Incoming: {
     label: "Incoming",
     color: "hsl(var(--chart-1))",
   },
-  outgoing: {
+  Outgoing: {
     label: "Outgoing",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
+const kpiChartConfig = {
+  value: {
+    label: "Value",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
+
+const kpiChartData = [
+    { name: "Total Products", value: kpiData.totalProducts, icon: Package },
+    { name: "Pending Receipts", value: kpiData.pendingReceipts, icon: PackagePlus },
+    { name: "Pending Deliveries", value: kpiData.pendingDeliveries, icon: PackageCheck },
+    { name: "Scheduled Transfers", value: kpiData.scheduledTransfers, icon: Shuffle },
+    { name: "Low Stock", value: kpiData.lowStock, icon: Clock },
+    { name: "Out of Stock", value: kpiData.outOfStock, icon: XCircle },
+];
+
 
 export default function DashboardPage() {
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+       <div className="grid gap-4 md:gap-8 lg:grid-cols-1">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{kpiData.totalProducts.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Across all warehouses</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Receipts</CardTitle>
-            <PackagePlus className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+{kpiData.pendingReceipts}</div>
-            <p className="text-xs text-muted-foreground">From suppliers</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Deliveries</CardTitle>
-            <PackageCheck className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+{kpiData.pendingDeliveries}</div>
-            <p className="text-xs text-muted-foreground">To customers</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Scheduled Transfers</CardTitle>
-            <Shuffle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{kpiData.scheduledTransfers}</div>
-            <p className="text-xs text-muted-foreground">Between locations</p>
-          </CardContent>
-        </Card>
-        <Card className="lg:col-span-1">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Alerts</CardTitle>
-            <div className="flex space-x-2">
-              <Clock className="h-4 w-4 text-yellow-500" />
-              <XCircle className="h-4 w-4 text-red-500" />
+          <CardHeader>
+             <div className="flex items-center gap-2">
+                <BarChart2 className="h-5 w-5 text-muted-foreground" />
+                <CardTitle>Key Metrics Overview</CardTitle>
             </div>
+            <CardDescription>A summary of important inventory statistics.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{kpiData.lowStock} Low Stock</div>
-            <p className="text-xs text-muted-foreground">{kpiData.outOfStock} Out of Stock</p>
+            <ChartContainer config={kpiChartConfig} className="min-h-[250px] w-full">
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={kpiChartData} layout="vertical" margin={{ left: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <XAxis type="number" />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={10}
+                    width={140}
+                  />
+                  <ChartTooltip
+                    cursor={{ fill: 'hsl(var(--muted))' }}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Bar dataKey="value" fill="var(--color-value)" radius={4} />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
       </div>
@@ -104,7 +99,7 @@ export default function DashboardPage() {
             <CardDescription>January - July 2024</CardDescription>
           </CardHeader>
           <CardContent>
-             <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+             <ChartContainer config={inventoryFlowChartConfig} className="min-h-[300px] w-full">
                 <BarChart accessibilityLayer data={inventoryChartData}>
                   <CartesianGrid vertical={false} />
                   <XAxis
@@ -121,8 +116,8 @@ export default function DashboardPage() {
                     tickFormatter={(value) => `${value / 1000}k`}
                   />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="Incoming" fill="var(--color-incoming)" radius={4} />
-                  <Bar dataKey="Outgoing" fill="var(--color-outgoing)" radius={4} />
+                  <Bar dataKey="Incoming" fill="var(--color-Incoming)" radius={4} />
+                  <Bar dataKey="Outgoing" fill="var(--color-Outgoing)" radius={4} />
                 </BarChart>
               </ChartContainer>
           </CardContent>
