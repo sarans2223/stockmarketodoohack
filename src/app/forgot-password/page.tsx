@@ -17,8 +17,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -27,7 +25,6 @@ export default function ForgotPasswordPage() {
 
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
 
     // This check must be client-side only
     if (typeof window !== 'undefined') {
@@ -39,11 +36,6 @@ export default function ForgotPasswordPage() {
         });
         router.push('/verify-otp');
     }
-=======
-    // Your teammate will add OTP sending logic here.
-    // For now, we'll just redirect to the verify otp page.
-    router.push('/verify-otp');
->>>>>>> 8d587d1 (if i give forgot password and give send otp there one page should be ins)
   };
 
   return (
@@ -66,11 +58,7 @@ export default function ForgotPasswordPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSendOtp} className="space-y-4">
-<<<<<<< HEAD
             <div className="space-y-2">
-=======
-            <div className="space-y-2" suppressHydrationWarning>
->>>>>>> 741c1eb (Try fixing this error: `Console Error: Hydration failed because the serv)
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
