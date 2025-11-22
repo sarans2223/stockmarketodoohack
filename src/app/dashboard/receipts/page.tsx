@@ -1,3 +1,4 @@
+
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { recentActivity } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const receipts = recentActivity.filter(a => a.type === 'Receipt');
 
@@ -28,8 +30,10 @@ export default function ReceiptsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Receipts</h1>
           <p className="text-muted-foreground">Process and track incoming goods.</p>
         </div>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" /> New Receipt
+        <Button asChild>
+          <Link href="/dashboard/receipts/new">
+            <PlusCircle className="mr-2 h-4 w-4" /> New Receipt
+          </Link>
         </Button>
       </div>
       <Card>

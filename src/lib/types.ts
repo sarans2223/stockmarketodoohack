@@ -1,4 +1,5 @@
 
+
 export type NavItem = {
   title: string;
   href: string;
@@ -13,6 +14,7 @@ export type Product = {
   category: string;
   uom: string;
   stock: number;
+  reorderLevel?: number;
 };
 
 export type Activity = {

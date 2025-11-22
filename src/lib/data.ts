@@ -1,3 +1,4 @@
+
 import type { Product, Activity } from './types';
 
 export const kpiData = {
@@ -30,11 +31,11 @@ export const recentActivity: Activity[] = [
 ];
 
 export const products: Product[] = [
-    { id: 'P001', name: 'Steel Coils', sku: 'SC-1001', category: 'Raw Materials', uom: 'kg', stock: 1200 },
-    { id: 'P002', name: 'Aluminum Sheets', sku: 'AS-2002', category: 'Raw Materials', uom: 'kg', stock: 800 },
-    { id: 'P003', name: 'M8x25 Bolts', sku: 'BLT-8025', category: 'Components', uom: 'units', stock: 25000 },
-    { id: 'P004', name: 'Ergonomic Office Chair', sku: 'CHR-ERG-01', category: 'Finished Goods', uom: 'units', stock: 150 },
-    { id: 'P005', name: 'Standing Desk Frame', sku: 'DSK-ST-03', category: 'Finished Goods', uom: 'units', stock: 85 },
+    { id: 'P001', name: 'Steel Coils', sku: 'SC-1001', category: 'Raw Materials', uom: 'kg', stock: 1200, reorderLevel: 500 },
+    { id: 'P002', name: 'Aluminum Sheets', sku: 'AS-2002', category: 'Raw Materials', uom: 'kg', stock: 800, reorderLevel: 400 },
+    { id: 'P003', name: 'M8x25 Bolts', sku: 'BLT-8025', category: 'Components', uom: 'units', stock: 25000, reorderLevel: 10000 },
+    { id: 'P004', name: 'Ergonomic Office Chair', sku: 'CHR-ERG-01', category: 'Finished Goods', uom: 'units', stock: 150, reorderLevel: 50 },
+    { id: 'P005', name: 'Standing Desk Frame', sku: 'DSK-ST-03', category: 'Finished Goods', uom: 'units', stock: 85, reorderLevel: 30 },
 ];
 
 export const deliveryDiscrepancyData = `
