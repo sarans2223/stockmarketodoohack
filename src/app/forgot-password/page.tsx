@@ -66,7 +66,11 @@ export default function ForgotPasswordPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSendOtp} className="space-y-4">
+<<<<<<< HEAD
             <div className="space-y-2">
+=======
+            <div className="space-y-2" suppressHydrationWarning>
+>>>>>>> 741c1eb (Try fixing this error: `Console Error: Hydration failed because the serv)
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
