@@ -11,10 +11,17 @@ export default function CreateProductPage() {
     const { toast } = useToast();
 
     const handleAddProduct = (newProduct: Omit<Product, 'id'>) => {
-        // In a real app, you'd save this to a database.
-        // For now, we'll just show a toast notification.
-        console.log('New product added:', newProduct);
-         toast({
+        const storedProducts = localStorage.getItem('products');
+        const products: Product[] = storedProducts ? JSON.parse(storedProducts) : [];
+        const productWithId: Product = {
+            ...newProduct,
+            id: `P${(products.length + 1).toString().padStart(3, '0')}`,
+        };
+        const updatedProducts = [...products, productWithId];
+        localStorage.setItem('products', JSON.stringify(updatedProducts));
+
+        console.log('New product added:', productWithId);
+        toast({
             title: "Product Created",
             description: `${newProduct.name} has been created and is ready to be managed.`,
         });

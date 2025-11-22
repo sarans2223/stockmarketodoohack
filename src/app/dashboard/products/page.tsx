@@ -26,15 +26,30 @@ import { AddProductForm } from "./add-product-form";
 import type { Product } from '@/lib/types';
 
 export default function ProductsPage() {
-  const [products, setProducts] = React.useState<Product[]>(initialProducts);
+  const [products, setProducts] = React.useState<Product[]>([]);
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts));
+    } else {
+      // If nothing in localStorage, initialize with data from lib/data.ts
+      setProducts(initialProducts);
+      localStorage.setItem('products', JSON.stringify(initialProducts));
+    }
+  }, []);
+
   const handleAddProduct = (newProduct: Omit<Product, 'id'>) => {
-    const productWithId = {
-        ...newProduct,
-        id: `P${(products.length + 1).toString().padStart(3, '0')}`,
-    };
-    setProducts(prev => [...prev, productWithId]);
+    setProducts(prev => {
+        const productWithId = {
+            ...newProduct,
+            id: `P${(prev.length + 1).toString().padStart(3, '0')}`,
+        };
+        const updatedProducts = [...prev, productWithId];
+        localStorage.setItem('products', JSON.stringify(updatedProducts));
+        return updatedProducts;
+    });
     setIsSheetOpen(false);
   }
 
