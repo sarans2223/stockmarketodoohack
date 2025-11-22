@@ -44,6 +44,12 @@ export default function SignupPage() {
     const userExists = users.some((user: any) => user.email === email);
     if (userExists) {
       setError('An account with this email already exists.');
+      toast({
+        variant: "destructive",
+        title: 'Signup Failed',
+        description: 'An account with this email already exists. Please log in.',
+      });
+      router.push('/');
       return;
     }
 
@@ -59,7 +65,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-background p-4" suppressHydrationWarning>
       <Button asChild variant="ghost" className="absolute left-4 top-4">
         <Link href="/">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -75,7 +81,7 @@ export default function SignupPage() {
           <CardDescription>Enter your details to get started.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleCreateAccount} className="space-y-4" suppressHydrationWarning>
+          <form onSubmit={handleCreateAccount} className="space-y-4">
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
