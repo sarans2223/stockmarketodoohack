@@ -3,23 +3,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Settings, Warehouse, User, LogOut, Building, ChevronsUpDown } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Warehouse, User, LogOut, Building, ChevronsUpDown } from "lucide-react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { Button } from "@/components/ui/button";
 
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
-
+  
   const isOperationsActive = pathname.startsWith(`/dashboard/receipts`) ||
                              pathname.startsWith(`/dashboard/deliveries`) ||
                              pathname.startsWith(`/dashboard/adjustments`);
+
+  const [isOperationsOpen, setIsOperationsOpen] = React.useState(isOperationsActive);
+
 
   const topLevelRoutes = [
     {
@@ -122,37 +126,37 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
             </Link>
         ))}
 
-        <Accordion type="single" collapsible defaultValue={isOperationsActive ? "operations" : undefined} className="w-full">
-            <AccordionItem value="operations" className="border-b-0">
-                <AccordionTrigger className={cn(
-                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:no-underline",
-                     isOperationsActive ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
-                    "[&[data-state=open]>svg:last-child]:rotate-180"
+        <Collapsible open={isOperationsOpen} onOpenChange={setIsOperationsOpen}>
+            <CollapsibleTrigger asChild>
+                <Button variant="ghost" className={cn(
+                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors justify-start w-full h-auto hover:bg-muted/50",
+                    isOperationsActive ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+                    "data-[state=open]:text-foreground data-[state=open]:bg-muted/50"
                 )}>
                     <Building className="h-4 w-4" />
                     <span className="flex-1 text-left">Operations</span>
-                    <ChevronsUpDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-                </AccordionTrigger>
-                <AccordionContent className="pt-1 pb-0 pl-7 space-y-1">
-                    {operationsRoutes.map((route) => (
-                        <Link
-                            key={route.href}
-                            href={route.href}
-                            className={cn(
-                                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
-                                route.active
-                                ? "bg-primary/20 text-primary"
-                                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                            )}
-                            >
-                            {route.icon}
-                            <span className="flex-1">{route.label}</span>
-                            {route.badge && <Badge variant={"default"}>{route.badge}</Badge>}
-                        </Link>
-                    ))}
-                </AccordionContent>
-            </AccordionItem>
-        </Accordion>
+                    <ChevronsUpDown className={cn("h-4 w-4 shrink-0 transition-transform duration-200", isOperationsOpen && "rotate-180")} />
+                </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-1 pb-0 pl-7 space-y-1">
+                {operationsRoutes.map((route) => (
+                    <Link
+                        key={route.href}
+                        href={route.href}
+                        className={cn(
+                            "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
+                            route.active
+                            ? "bg-primary/20 text-primary"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                        )}
+                        >
+                        {route.icon}
+                        <span className="flex-1">{route.label}</span>
+                        {route.badge && <Badge variant={"default"}>{route.badge}</Badge>}
+                    </Link>
+                ))}
+            </CollapsibleContent>
+        </Collapsible>
 
 
       {otherRoutes.map((route, index) => {
