@@ -1,3 +1,7 @@
+
+'use client';
+
+import * as React from 'react';
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,10 +19,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { products } from "@/lib/data";
+import { products as initialProducts } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { AddProductForm } from "./add-product-form";
+import type { Product } from '@/lib/types';
 
 export default function ProductsPage() {
+  const [products, setProducts] = React.useState<Product[]>(initialProducts);
+  const [isSheetOpen, setIsSheetOpen] = React.useState(false);
+
+  const handleAddProduct = (newProduct: Omit<Product, 'id'>) => {
+    const productWithId = {
+        ...newProduct,
+        id: `P${(products.length + 1).toString().padStart(3, '0')}`,
+    };
+    setProducts(prev => [...prev, productWithId]);
+    setIsSheetOpen(false);
+  }
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -26,9 +45,19 @@ export default function ProductsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Products</h1>
           <p className="text-muted-foreground">Manage your product catalog.</p>
         </div>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" /> Add Product
-        </Button>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button>
+              <PlusCircle className="mr-2 h-4 w-4" /> Add Product
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Add New Product</SheetTitle>
+            </SheetHeader>
+            <AddProductForm onProductAdd={handleAddProduct} />
+          </SheetContent>
+        </Sheet>
       </div>
       <Card>
         <CardHeader>
