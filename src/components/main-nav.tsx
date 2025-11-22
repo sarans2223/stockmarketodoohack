@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Warehouse, User, LogOut } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Warehouse, User, LogOut, ChevronDown } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -12,17 +12,14 @@ import { Badge } from "@/components/ui/badge";
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
 
-  const routes = [
-     {
-      href: `/dashboard`,
-      label: "Dashboard",
-      active: pathname === `/dashboard`,
-      icon: <Home className="h-4 w-4" />,
-    },
-    {
-        type: 'heading' as const,
-        label: 'Operations'
-    },
+  const isOperationsActive = pathname.startsWith('/dashboard/receipts') || pathname.startsWith('/dashboard/deliveries') || pathname.startsWith('/dashboard/adjustments');
+  const [isOperationsOpen, setIsOperationsOpen] = React.useState(isOperationsActive);
+
+  React.useEffect(() => {
+    setIsOperationsOpen(isOperationsActive);
+  }, [pathname, isOperationsActive]);
+
+  const operationsRoutes = [
     {
       href: `/dashboard/receipts`,
       label: "Receipts",
@@ -43,6 +40,18 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       active: pathname.startsWith(`/dashboard/adjustments`),
       icon: <SlidersHorizontal className="h-4 w-4" />,
     },
+  ];
+
+  const mainRoutes = [
+     {
+      href: `/dashboard`,
+      label: "Dashboard",
+      active: pathname === `/dashboard`,
+      icon: <Home className="h-4 w-4" />,
+    },
+  ];
+
+   const bottomRoutes = [
     {
         type: 'separator' as const
     },
@@ -94,7 +103,64 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
 
   return (
     <nav className={cn("flex flex-col space-y-1", className)} {...props}>
-      {routes.map((route, index) => {
+      {mainRoutes.map((route) => (
+        <Link
+            key={route.href}
+            href={route.href}
+            className={cn(
+                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
+                route.active
+                ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            )}
+            >
+            {route.icon}
+            <span className="flex-1">{route.label}</span>
+            {'badge' in route && route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
+        </Link>
+      ))}
+
+      <div>
+        <button
+          onClick={() => setIsOperationsOpen(!isOperationsOpen)}
+          className={cn(
+            "flex w-full items-center justify-between rounded-lg px-3 py-2 text-base font-medium transition-colors",
+            isOperationsActive
+              ? "text-foreground bg-muted/60"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+          )}
+        >
+          <span className="font-semibold text-muted-foreground/80">Operations</span>
+          <ChevronDown
+            className={cn(
+              "h-5 w-5 text-muted-foreground transition-transform",
+              isOperationsOpen && "rotate-180"
+            )}
+          />
+        </button>
+        {isOperationsOpen && (
+          <div className="mt-1 flex flex-col space-y-1 pl-4">
+            {operationsRoutes.map((route) => (
+               <Link
+                key={route.href}
+                href={route.href}
+                className={cn(
+                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
+                    route.active
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                )}
+                >
+                {route.icon}
+                <span className="flex-1">{route.label}</span>
+                {'badge' in route && route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {bottomRoutes.map((route, index) => {
         if (route.type === 'heading') {
             return <h4 key={index} className="px-3 pt-4 pb-1 text-sm font-semibold text-muted-foreground/80">{route.label}</h4>
         }
