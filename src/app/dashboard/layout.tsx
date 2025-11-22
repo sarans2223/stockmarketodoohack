@@ -1,13 +1,12 @@
 
 'use client';
 
-import { Boxes, Menu, Search } from "lucide-react";
+import { Boxes, Menu } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 
 import { MainNav } from "@/components/main-nav";
 import { UserNav } from "@/components/user-nav";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
@@ -56,18 +55,7 @@ export default function DashboardLayout({
               </div>
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                />
-              </div>
-            </form>
-          </div>
+          <div className="w-full flex-1" />
           <UserNav />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background">
