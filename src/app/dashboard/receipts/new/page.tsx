@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import type { Product, Activity } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { products as initialProducts, recentActivity as initialActivity } from '@/lib/data';
+import { Separator } from '@/components/ui/separator';
 
 interface ReceiptItem {
   productId: string;
