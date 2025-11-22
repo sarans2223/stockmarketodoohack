@@ -1,8 +1,10 @@
+
 'use client';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, KeyRound } from 'lucide-react';
+import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -14,19 +16,41 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState('');
 
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
-    // Your teammate will add OTP sending logic here.
-    // For now, we'll just redirect to the reset page.
-    router.push('/reset-password');
+    setError('');
+
+    const storedUsers = localStorage.getItem('users');
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+    
+    const foundUser = users.find((user: any) => user.email === email);
+
+    if (!foundUser) {
+        setError('Account not found. Please enter a registered email.');
+        return;
+    }
+
+    // Store email to be reset and redirect to OTP page
+    localStorage.setItem('emailToReset', email);
+    toast({
+        title: 'OTP Sent',
+        description: 'A mock OTP has been sent to your email.',
+    });
+    router.push('/verify-otp');
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-background p-4" suppressHydrationWarning>
       <Button asChild variant="ghost" className="absolute left-4 top-4">
         <Link href="/">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -44,7 +68,16 @@ export default function ForgotPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSendOtp} className="space-y-4" suppressHydrationWarning>
+          <form onSubmit={handleSendOtp} className="space-y-4">
+            {error && (
+                <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>
+                        {error}
+                    </AlertDescription>
+                </Alert>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -52,6 +85,8 @@ export default function ForgotPasswordPage() {
                 type="email"
                 placeholder="manager@example.com"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <Button type="submit" className="w-full">
