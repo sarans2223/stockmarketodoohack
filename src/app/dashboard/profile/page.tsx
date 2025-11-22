@@ -26,7 +26,7 @@ export default function ProfilePage() {
             Update your account information.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6" suppressHydrationWarning>
             <div className="flex items-center space-x-4">
                 <Avatar className="h-20 w-20">
                     {userAvatar && <AvatarImage src={userAvatar.imageUrl} alt="User Avatar" data-ai-hint={userAvatar.imageHint} />}
