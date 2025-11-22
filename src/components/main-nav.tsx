@@ -21,9 +21,6 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
   const isSettingsActive = pathname.startsWith('/dashboard/settings');
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(isSettingsActive);
 
-  const isProfileActive = pathname.startsWith('/dashboard/profile');
-  const [isProfileOpen, setIsProfileOpen] = React.useState(isProfileActive);
-
   const dashboardRoutes = [
     {
       href: `/dashboard`,
@@ -89,15 +86,6 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
     },
   ];
 
-  const profileRoutes = [
-    {
-        href: '/dashboard/profile',
-        label: 'My Profile',
-        active: pathname.startsWith('/dashboard/profile'),
-        icon: <User className="h-4 w-4" />
-    },
-  ];
-
    const bottomRoutes = [
     {
         type: 'separator' as const
@@ -113,6 +101,12 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       label: "Products",
       active: pathname === `/dashboard/products`,
       icon: <Package className="h-4 w-4" />,
+    },
+    {
+        href: '/dashboard/profile',
+        label: 'My Profile',
+        active: pathname.startsWith('/dashboard/profile'),
+        icon: <User className="h-4 w-4" />
     },
     {
         type: 'separator' as const
@@ -136,10 +130,6 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
   React.useEffect(() => {
     setIsSettingsOpen(isSettingsActive);
   }, [pathname, isSettingsActive]);
-
-  React.useEffect(() => {
-    setIsProfileOpen(isProfileActive);
-    }, [pathname, isProfileActive]);
 
 
   return (
@@ -245,45 +235,6 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
         {isSettingsOpen && (
           <div className="mt-1 flex flex-col space-y-1 pl-4">
             {settingsRoutes.map((route) => (
-                <Link
-                key={route.href}
-                href={route.href}
-                className={cn(
-                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
-                    route.active
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                )}
-                >
-                {route.icon}
-                <span className="flex-1">{route.label}</span>
-                </Link>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div>
-        <button
-          onClick={() => setIsProfileOpen(!isProfileOpen)}
-          className={cn(
-            "flex w-full items-center justify-between rounded-lg px-3 py-2 text-base font-medium transition-colors",
-            isProfileActive
-              ? "text-foreground bg-muted/60"
-              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-          )}
-        >
-          <span className="font-semibold text-muted-foreground/80">Profile</span>
-          <ChevronDown
-            className={cn(
-              "h-5 w-5 text-muted-foreground transition-transform",
-              isProfileOpen && "rotate-180"
-            )}
-          />
-        </button>
-        {isProfileOpen && (
-          <div className="mt-1 flex flex-col space-y-1 pl-4">
-            {profileRoutes.map((route) => (
                 <Link
                 key={route.href}
                 href={route.href}
