@@ -18,7 +18,6 @@ export default function LoginPage() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
 
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -38,7 +37,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4" suppressHydrationWarning>
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="mx-auto w-full max-w-sm">
         <CardHeader className="text-center">
             <div className="inline-block bg-primary text-primary-foreground p-3 rounded-lg mb-4">
@@ -48,7 +47,7 @@ export default function LoginPage() {
           <CardDescription>Enter your credentials to access your inventory</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4" suppressHydrationWarning>
             {error && (
                 <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
@@ -58,7 +57,7 @@ export default function LoginPage() {
                     </AlertDescription>
                 </Alert>
             )}
-            <div className="space-y-2">
+            <div className="space-y-2" suppressHydrationWarning>
               <Label htmlFor="email">Email</Label>
               <Input 
                 id="email" 
@@ -69,7 +68,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2" suppressHydrationWarning>
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
                 <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">

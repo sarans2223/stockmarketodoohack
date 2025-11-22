@@ -27,6 +27,7 @@ export default function ForgotPasswordPage() {
 
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
+<<<<<<< HEAD
 
     // This check must be client-side only
     if (typeof window !== 'undefined') {
@@ -38,6 +39,11 @@ export default function ForgotPasswordPage() {
         });
         router.push('/verify-otp');
     }
+=======
+    // Your teammate will add OTP sending logic here.
+    // For now, we'll just redirect to the verify otp page.
+    router.push('/verify-otp');
+>>>>>>> 8d587d1 (if i give forgot password and give send otp there one page should be ins)
   };
 
   return (
