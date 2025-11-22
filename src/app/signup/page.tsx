@@ -65,7 +65,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-background p-4" suppressHydrationWarning>
+    <div className="relative flex min-h-screen items-center justify-center bg-background p-4">
       <Button asChild variant="ghost" className="absolute left-4 top-4">
         <Link href="/">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -81,7 +81,7 @@ export default function SignupPage() {
           <CardDescription>Enter your details to get started.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleCreateAccount} className="space-y-4">
+          <form onSubmit={handleCreateAccount} className="space-y-4" suppressHydrationWarning>
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
@@ -89,11 +89,11 @@ export default function SignupPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            <div className="space-y-2" suppressHydrationWarning>
+            <div className="space-y-2">
               <Label htmlFor="full-name">Full Name</Label>
               <Input id="full-name" placeholder="John Doe" required />
             </div>
-            <div className="space-y-2" suppressHydrationWarning>
+            <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -104,7 +104,7 @@ export default function SignupPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="space-y-2" suppressHydrationWarning>
+            <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input 
                 id="password" 
@@ -114,7 +114,7 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="space-y-2" suppressHydrationWarning>
+            <div className="space-y-2">
               <Label htmlFor="confirm-password">Confirm Password</Label>
               <Input 
                 id="confirm-password" 
@@ -125,7 +125,7 @@ export default function SignupPage() {
               />
             </div>
 
-            <div className="space-y-2" suppressHydrationWarning>
+            <div className="space-y-2">
               <Label>Role</Label>
               <RadioGroup defaultValue="staff" className="flex gap-4">
                 <div className="flex items-center space-x-2">
