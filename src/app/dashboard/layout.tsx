@@ -8,7 +8,7 @@ import Link from "next/link";
 import { MainNav } from "@/components/main-nav";
 import { UserNav } from "@/components/user-nav";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 export default function DashboardLayout({
@@ -35,7 +35,10 @@ export default function DashboardLayout({
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col">
+            <SheetContent side="left" className="flex flex-col p-0">
+                <SheetHeader className="p-4 border-b">
+                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                </SheetHeader>
               <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                 <Link
                   href="/dashboard"
@@ -47,7 +50,7 @@ export default function DashboardLayout({
                 </Link>
               </div>
               <div className="flex-1" onClick={closeSheet}>
-                <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                <nav className="grid items-start px-2 text-sm font-medium lg:px-4 py-4">
                   <MainNav />
                 </nav>
               </div>
