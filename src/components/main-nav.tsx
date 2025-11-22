@@ -1,27 +1,37 @@
+
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, PackageCheck, PackagePlus, Shuffle, SlidersHorizontal, History, Settings, Warehouse, User, LogOut } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, Shuffle, SlidersHorizontal, History, Settings, Warehouse, User, LogOut, Building, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
 
-  const routes = [
+  const isOperationsActive = pathname.startsWith(`/dashboard/receipts`) ||
+                             pathname.startsWith(`/dashboard/deliveries`) ||
+                             pathname.startsWith(`/dashboard/adjustments`);
+
+  const topLevelRoutes = [
     {
       href: `/dashboard`,
       label: "Dashboard",
       active: pathname === `/dashboard`,
       icon: <Home className="h-4 w-4" />,
     },
-    {
-        type: 'heading',
-        label: 'Operations'
-    },
-    {
+  ];
+
+  const operationsRoutes = [
+      {
       href: `/dashboard/receipts`,
       label: "Receipts",
       active: pathname.startsWith(`/dashboard/receipts`),
@@ -41,7 +51,10 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       active: pathname.startsWith(`/dashboard/adjustments`),
       icon: <SlidersHorizontal className="h-4 w-4" />,
     },
-    {
+  ];
+
+  const otherRoutes = [
+     {
         type: 'separator'
     },
     {
@@ -88,16 +101,68 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
         active: false,
         icon: <LogOut className="h-4 w-4" />
     }
-  ];
+  ]
 
   return (
     <nav className={cn("flex flex-col space-y-1", className)} {...props}>
-      {routes.map((route, index) => {
-        if (route.type === 'heading') {
-            return <h4 key={index} className="px-3 pt-4 pb-1 text-sm font-semibold text-muted-foreground/80">{route.label}</h4>
-        }
-        if (route.type === 'separator') {
-            return <div key={index} className="py-2" />
+        {topLevelRoutes.map((route) => (
+             <Link
+                key={route.href}
+                href={route.href}
+                className={cn(
+                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:bg-muted/50",
+                    route.active
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground"
+                )}
+                >
+                {route.icon}
+                <span className="flex-1">{route.label}</span>
+                {route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
+            </Link>
+        ))}
+
+        <Accordion type="single" collapsible defaultValue={isOperationsActive ? "operations" : undefined} className="w-full">
+            <AccordionItem value="operations" className="border-b-0">
+                <AccordionTrigger className={cn(
+                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:no-underline hover:bg-muted/50",
+                    isOperationsActive ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+                    "[&[data-state=open]>svg:last-child]:rotate-180"
+                )}>
+                    <Building className="h-4 w-4" />
+                    <span className="flex-1 text-left">Operations</span>
+                    <ChevronsUpDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+                </AccordionTrigger>
+                <AccordionContent className="pt-1 pb-0 pl-7 space-y-1">
+                    {operationsRoutes.map((route) => (
+                        <Link
+                            key={route.href}
+                            href={route.href}
+                            className={cn(
+                                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:bg-muted/50",
+                                route.active
+                                ? "bg-primary/20 text-primary"
+                                : "text-muted-foreground"
+                            )}
+                            >
+                            {route.icon}
+                            <span className="flex-1">{route.label}</span>
+                            {route.badge && <Badge variant={"default"}>{route.badge}</Badge>}
+                        </Link>
+                    ))}
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+
+
+      {otherRoutes.map((route, index) => {
+        if ('type' in route) {
+            if (route.type === 'heading') {
+                return <h4 key={index} className="px-3 pt-4 pb-1 text-sm font-semibold text-muted-foreground/80">{route.label}</h4>
+            }
+            if (route.type === 'separator') {
+                return <div key={index} className="py-2" />
+            }
         }
         return (
             <Link
@@ -112,7 +177,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
             >
             {route.icon}
             <span className="flex-1">{route.label}</span>
-            {route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
+            {'badge' in route && route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
             </Link>
         )
       })}
