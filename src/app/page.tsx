@@ -17,13 +17,20 @@ export default function LoginPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
+  const [users, setUsers] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    // This check ensures localStorage is accessed only on the client side.
+    const storedUsers = localStorage.getItem('users');
+    if (storedUsers) {
+      setUsers(JSON.parse(storedUsers));
+    }
+  }, []);
+
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    const storedUsers = localStorage.getItem('users');
-    const users = storedUsers ? JSON.parse(storedUsers) : [];
     
     const foundUser = users.find((user: any) => user.email === email);
 
@@ -57,7 +64,7 @@ export default function LoginPage() {
                     </AlertDescription>
                 </Alert>
             )}
-            <div className="space-y-2" suppressHydrationWarning>
+            <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input 
                 id="email" 
@@ -68,7 +75,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="space-y-2" suppressHydrationWarning>
+            <div className="space-y-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
                 <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">
