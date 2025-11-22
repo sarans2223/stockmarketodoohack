@@ -63,7 +63,7 @@ export default function DashboardPage() {
           <CardHeader>
              <div className="flex items-center gap-2">
                 <BarChart2 className="h-5 w-5 text-muted-foreground" />
-                <CardTitle>Key Metrics Overview</CardTitle>
+                <CardTitle>Overview</CardTitle>
             </div>
             <CardDescription>A summary of important inventory statistics.</CardDescription>
           </CardHeader>
@@ -96,7 +96,7 @@ export default function DashboardPage() {
         <Card className="xl:col-span-2">
           <CardHeader>
             <CardTitle>Inventory Flow</CardTitle>
-            <CardDescription>January - July 2024</CardDescription>
+            <CardDescription>January - July 2025</CardDescription>
           </CardHeader>
           <CardContent>
              <ChartContainer config={inventoryFlowChartConfig} className="min-h-[300px] w-full">

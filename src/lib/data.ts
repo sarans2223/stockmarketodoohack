@@ -10,21 +10,21 @@ export const kpiData = {
 };
 
 export const inventoryChartData = [
-  { date: "2024-01-01", "Incoming": 4000, "Outgoing": 2400 },
-  { date: "2024-02-01", "Incoming": 3000, "Outgoing": 1398 },
-  { date: "2024-03-01", "Incoming": 2000, "Outgoing": 9800 },
-  { date: "2024-04-01", "Incoming": 2780, "Outgoing": 3908 },
-  { date: "2024-05-01", "Incoming": 1890, "Outgoing": 4800 },
-  { date: "2024-06-01", "Incoming": 2390, "Outgoing": 3800 },
-  { date: "2024-07-01", "Incoming": 3490, "Outgoing": 4300 },
+  { date: "2025-01-01", "Incoming": 4000, "Outgoing": 2400 },
+  { date: "2025-02-01", "Incoming": 3000, "Outgoing": 1398 },
+  { date: "2025-03-01", "Incoming": 2000, "Outgoing": 9800 },
+  { date: "2025-04-01", "Incoming": 2780, "Outgoing": 3908 },
+  { date: "2025-05-01", "Incoming": 1890, "Outgoing": 4800 },
+  { date: "2025-06-01", "Incoming": 2390, "Outgoing": 3800 },
+  { date: "2025-07-01", "Incoming": 3490, "Outgoing": 4300 },
 ];
 
 export const recentActivity: Activity[] = [
-    { id: 'REC-001', type: 'Receipt', date: '2024-07-28', status: 'Completed', details: 'Received 100 units of Steel Coils from Supplier A.' },
-    { id: 'DEL-003', type: 'Delivery', date: '2024-07-28', status: 'Pending', details: 'Delivery of 20 chairs to Customer B.' },
-    { id: 'TRN-002', type: 'Transfer', date: '2024-07-27', status: 'In Transit', details: 'Transferring 50kg of bolts from Main Warehouse to Production Line 2.' },
-    { id: 'ADJ-001', type: 'Adjustment', date: '2024-07-26', status: 'Completed', details: 'Adjusted -3kg of damaged Steel Coils.' },
-    { id: 'REC-002', type: 'Receipt', date: '2024-07-25', status: 'Completed', details: 'Received 500 units of Screws from Supplier C.' },
+    { id: 'REC-001', type: 'Receipt', date: '2025-07-28', status: 'Completed', details: 'Received 100 units of Steel Coils from Supplier A.' },
+    { id: 'DEL-003', type: 'Delivery', date: '2025-07-28', status: 'Pending', details: 'Delivery of 20 chairs to Customer B.' },
+    { id: 'TRN-002', type: 'Transfer', date: '2025-07-27', status: 'In Transit', details: 'Transferring 50kg of bolts from Main Warehouse to Production Line 2.' },
+    { id: 'ADJ-001', type: 'Adjustment', date: '2025-07-26', status: 'Completed', details: 'Adjusted -3kg of damaged Steel Coils.' },
+    { id: 'REC-002', type: 'Receipt', date: '2025-07-25', status: 'Completed', details: 'Received 500 units of Screws from Supplier C.' },
 ];
 
 export const products: Product[] = [
