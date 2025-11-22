@@ -48,7 +48,7 @@ export default function DashboardLayout({
                   <span className="">StockPilot</span>
                 </Link>
               </div>
-              <div className="flex-1" onClick={closeSheet}>
+              <div className="flex-1">
                 <nav className="grid items-start px-2 text-sm font-medium lg:px-4 py-4">
                   <MainNav />
                 </nav>
