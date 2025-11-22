@@ -24,24 +24,12 @@ export default function ForgotPasswordPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [email, setEmail] = React.useState('');
-  const [error, setError] = React.useState('');
 
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
 
     // This check must be client-side only
     if (typeof window !== 'undefined') {
-        const storedUsers = localStorage.getItem('users');
-        const users = storedUsers ? JSON.parse(storedUsers) : [];
-        
-        const foundUser = users.find((user: any) => user.email === email);
-
-        if (!foundUser) {
-            setError('Account not found. Please enter a registered email.');
-            return;
-        }
-
         // Store email to be reset and redirect to OTP page
         localStorage.setItem('emailToReset', email);
         toast({
@@ -72,15 +60,6 @@ export default function ForgotPasswordPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSendOtp} className="space-y-4">
-            {error && (
-                <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>
-                        {error}
-                    </AlertDescription>
-                </Alert>
-            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
