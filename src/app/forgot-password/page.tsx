@@ -30,23 +30,26 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     setError('');
 
-    const storedUsers = localStorage.getItem('users');
-    const users = storedUsers ? JSON.parse(storedUsers) : [];
-    
-    const foundUser = users.find((user: any) => user.email === email);
+    // This check must be client-side only
+    if (typeof window !== 'undefined') {
+        const storedUsers = localStorage.getItem('users');
+        const users = storedUsers ? JSON.parse(storedUsers) : [];
+        
+        const foundUser = users.find((user: any) => user.email === email);
 
-    if (!foundUser) {
-        setError('Account not found. Please enter a registered email.');
-        return;
+        if (!foundUser) {
+            setError('Account not found. Please enter a registered email.');
+            return;
+        }
+
+        // Store email to be reset and redirect to OTP page
+        localStorage.setItem('emailToReset', email);
+        toast({
+            title: 'OTP Sent',
+            description: 'A mock OTP has been sent to your email.',
+        });
+        router.push('/verify-otp');
     }
-
-    // Store email to be reset and redirect to OTP page
-    localStorage.setItem('emailToReset', email);
-    toast({
-        title: 'OTP Sent',
-        description: 'A mock OTP has been sent to your email.',
-    });
-    router.push('/verify-otp');
   };
 
   return (
