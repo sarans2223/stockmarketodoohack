@@ -28,6 +28,11 @@ export default function SignupPage() {
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [error, setError] = React.useState('');
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleCreateAccount = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,34 +43,36 @@ export default function SignupPage() {
       return;
     }
 
-    const storedUsers = localStorage.getItem('users');
-    const users = storedUsers ? JSON.parse(storedUsers) : [];
+    if (isClient) {
+      const storedUsers = localStorage.getItem('users');
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-    const userExists = users.some((user: any) => user.email === email);
-    if (userExists) {
-      setError('An account with this email already exists.');
+      const userExists = users.some((user: any) => user.email === email);
+      if (userExists) {
+        setError('An account with this email already exists.');
+        toast({
+          variant: "destructive",
+          title: 'Signup Failed',
+          description: 'An account with this email already exists. Please log in.',
+        });
+        router.push('/');
+        return;
+      }
+
+      const newUser = { email, password };
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+
       toast({
-        variant: "destructive",
-        title: 'Signup Failed',
-        description: 'An account with this email already exists. Please log in.',
+        title: 'Account Created Successfully!',
+        description: 'Please log in with your new credentials.',
       });
       router.push('/');
-      return;
     }
-
-    const newUser = { email, password };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    toast({
-      title: 'Account Created Successfully!',
-      description: 'Please log in with your new credentials.',
-    });
-    router.push('/');
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-background p-4" suppressHydrationWarning>
+    <div className="relative flex min-h-screen items-center justify-center bg-background p-4">
       <Button asChild variant="ghost" className="absolute left-4 top-4">
         <Link href="/">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -81,7 +88,7 @@ export default function SignupPage() {
           <CardDescription>Enter your details to get started.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleCreateAccount} className="space-y-4">
+          <form onSubmit={handleCreateAccount} className="space-y-4" suppressHydrationWarning>
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
