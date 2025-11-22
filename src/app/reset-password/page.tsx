@@ -1,8 +1,9 @@
+
 'use client';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, KeyRound } from 'lucide-react';
+import { ArrowLeft, ShieldCheck } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -14,15 +15,20 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
-export default function ForgotPasswordPage() {
+export default function ResetPasswordPage() {
   const router = useRouter();
+  const { toast } = useToast();
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleResetPassword = (e: React.FormEvent) => {
     e.preventDefault();
-    // Your teammate will add OTP sending logic here.
-    // For now, we'll just redirect to the reset page.
-    router.push('/reset-password');
+    // Backend logic for password reset will go here.
+    toast({
+      title: 'Password Reset Successful!',
+      description: 'You can now log in with your new password.',
+    });
+    router.push('/');
   };
 
   return (
@@ -36,26 +42,25 @@ export default function ForgotPasswordPage() {
       <Card className="mx-auto w-full max-w-sm">
         <CardHeader className="text-center">
           <div className="mb-4 inline-block rounded-lg bg-primary p-3 text-primary-foreground">
-            <KeyRound className="h-8 w-8" />
+            <ShieldCheck className="h-8 w-8" />
           </div>
-          <CardTitle className="text-2xl font-bold">Forgot Password</CardTitle>
+          <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
           <CardDescription>
-            Enter your email to receive a one-time password (OTP).
+            Enter a new password for your account.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSendOtp} className="space-y-4">
+          <form onSubmit={handleResetPassword} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="manager@example.com"
-                required
-              />
+              <Label htmlFor="new-password">New Password</Label>
+              <Input id="new-password" type="password" required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password">Confirm New Password</Label>
+              <Input id="confirm-password" type="password" required />
             </div>
             <Button type="submit" className="w-full">
-              Send OTP
+              Reset Password
             </Button>
           </form>
         </CardContent>
