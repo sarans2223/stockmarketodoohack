@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Warehouse, User, LogOut, ChevronDown } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Warehouse, User, LogOut, ChevronDown, Settings, PlusCircle, Map, Shapes, Repeat } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -14,6 +14,9 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
 
   const isOperationsActive = pathname.startsWith('/dashboard/receipts') || pathname.startsWith('/dashboard/deliveries') || pathname.startsWith('/dashboard/adjustments');
   const [isOperationsOpen, setIsOperationsOpen] = React.useState(isOperationsActive);
+
+  const isAdminActive = pathname.startsWith('/dashboard/admin');
+  const [isAdminOpen, setIsAdminOpen] = React.useState(isAdminActive);
 
   const operationsRoutes = [
     {
@@ -35,6 +38,33 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       label: "Inventory Adjustment",
       active: pathname.startsWith(`/dashboard/adjustments`),
       icon: <SlidersHorizontal className="h-4 w-4" />,
+    },
+  ];
+
+  const adminRoutes = [
+    {
+      href: `/dashboard/admin/create-product`,
+      label: "Create Products",
+      active: pathname.startsWith(`/dashboard/admin/create-product`),
+      icon: <PlusCircle className="h-4 w-4" />,
+    },
+    {
+      href: `/dashboard/admin/stock-availability`,
+      label: "Stocks Availability",
+      active: pathname.startsWith(`/dashboard/admin/stock-availability`),
+      icon: <Map className="h-4 w-4" />,
+    },
+    {
+      href: `/dashboard/admin/product-categories`,
+      label: "Product Categories",
+      active: pathname.startsWith(`/dashboard/admin/product-categories`),
+      icon: <Shapes className="h-4 w-4" />,
+    },
+    {
+      href: `/dashboard/admin/reordering-rules`,
+      label: "Reordering Rules",
+      active: pathname.startsWith(`/dashboard/admin/reordering-rules`),
+      icon: <Repeat className="h-4 w-4" />,
     },
   ];
 
@@ -100,6 +130,11 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
   React.useEffect(() => {
     setIsOperationsOpen(isOperationsActive);
   }, [pathname, isOperationsActive]);
+  
+  React.useEffect(() => {
+    setIsAdminOpen(isAdminActive);
+  }, [pathname, isAdminActive]);
+
 
   return (
     <nav className={cn("flex flex-col space-y-1", className)} {...props}>
@@ -141,6 +176,46 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
         {isOperationsOpen && (
           <div className="mt-1 flex flex-col space-y-1 pl-4">
             {operationsRoutes.map((route) => (
+               <Link
+                key={route.href}
+                href={route.href}
+                className={cn(
+                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
+                    route.active
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                )}
+                >
+                {route.icon}
+                <span className="flex-1">{route.label}</span>
+                {'badge' in route && route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <button
+          onClick={() => setIsAdminOpen(!isAdminOpen)}
+          className={cn(
+            "flex w-full items-center justify-between rounded-lg px-3 py-2 text-base font-medium transition-colors",
+            isAdminActive
+              ? "text-foreground bg-muted/60"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+          )}
+        >
+          <span className="font-semibold text-muted-foreground/80">Admin</span>
+          <ChevronDown
+            className={cn(
+              "h-5 w-5 text-muted-foreground transition-transform",
+              isAdminOpen && "rotate-180"
+            )}
+          />
+        </button>
+        {isAdminOpen && (
+          <div className="mt-1 flex flex-col space-y-1 pl-4">
+            {adminRoutes.map((route) => (
                <Link
                 key={route.href}
                 href={route.href}
