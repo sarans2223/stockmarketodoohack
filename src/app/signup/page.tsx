@@ -28,11 +28,6 @@ export default function SignupPage() {
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [error, setError] = React.useState('');
-  const [isClient, setIsClient] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const handleCreateAccount = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,32 +38,30 @@ export default function SignupPage() {
       return;
     }
 
-    if (isClient) {
-      const storedUsers = localStorage.getItem('users');
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
+    const storedUsers = localStorage.getItem('users');
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-      const userExists = users.some((user: any) => user.email === email);
-      if (userExists) {
-        setError('An account with this email already exists.');
-        toast({
-          variant: "destructive",
-          title: 'Signup Failed',
-          description: 'An account with this email already exists. Please log in.',
-        });
-        router.push('/');
-        return;
-      }
-
-      const newUser = { email, password };
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-
+    const userExists = users.some((user: any) => user.email === email);
+    if (userExists) {
+      setError('An account with this email already exists.');
       toast({
-        title: 'Account Created Successfully!',
-        description: 'Please log in with your new credentials.',
+        variant: "destructive",
+        title: 'Signup Failed',
+        description: 'An account with this email already exists. Please log in.',
       });
       router.push('/');
+      return;
     }
+
+    const newUser = { email, password };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    toast({
+      title: 'Account Created Successfully!',
+      description: 'Please log in with your new credentials.',
+    });
+    router.push('/');
   };
 
   return (
