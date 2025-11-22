@@ -21,3 +21,17 @@ export type Activity = {
     status: 'Completed' | 'Pending' | 'In Transit';
     details: string;
 };
+
+export type NavRoute = {
+    href: string;
+    label: string;
+    active: boolean;
+    icon: React.ReactNode;
+    badge?: string;
+    type?: undefined;
+} | {
+    type: 'heading';
+    label: string;
+} | {
+    type: 'separator';
+};

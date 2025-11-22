@@ -27,7 +27,7 @@ export default function AdjustmentsPage() {
       <div className="lg:col-span-2">
         <div className="flex items-center justify-between mb-6">
             <div>
-            <h1 className="text-3xl font-bold tracking-tight">Stock Adjustments</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Inventory Adjustments</h1>
             <p className="text-muted-foreground">Correct and record inventory discrepancies.</p>
             </div>
             <Button>
