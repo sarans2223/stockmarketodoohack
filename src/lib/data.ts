@@ -33,8 +33,6 @@ export const products: Product[] = [
     { id: 'P003', name: 'M8x25 Bolts', sku: 'BLT-8025', category: 'Components', uom: 'units', stock: 25000 },
     { id: 'P004', name: 'Ergonomic Office Chair', sku: 'CHR-ERG-01', category: 'Finished Goods', uom: 'units', stock: 150 },
     { id: 'P005', name: 'Standing Desk Frame', sku: 'DSK-ST-03', category: 'Finished Goods', uom: 'units', stock: 85 },
-    { id: 'P006', name: 'Safety Gloves', sku: 'EQP-GLV-01', category: 'Safety Equipment', uom: 'pairs', stock: 45 },
-    { id: 'P007', name: 'Packaging Box - Large', sku: 'PKG-LG-01', category: 'Packaging', uom: 'units', stock: 950 },
 ];
 
 export const deliveryDiscrepancyData = `

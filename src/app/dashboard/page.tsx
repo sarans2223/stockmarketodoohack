@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Package, PackageCheck, PackagePlus, Clock, XCircle } from "lucide-react";
+import { ArrowUpRight, Package, PackageCheck, PackagePlus, Clock, XCircle, Shuffle } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -41,7 +41,7 @@ const chartConfig = {
 export default function DashboardPage() {
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Products</CardTitle>
@@ -70,6 +70,16 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">{kpiData.pendingDeliveries}</div>
             <p className="text-xs text-muted-foreground">2 ready for dispatch</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Scheduled Transfers</CardTitle>
+            <Shuffle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{kpiData.scheduledTransfers}</div>
+            <p className="text-xs text-muted-foreground">For this week</p>
           </CardContent>
         </Card>
         <Card className="lg:col-span-1">
