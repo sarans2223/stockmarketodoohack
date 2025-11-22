@@ -18,7 +18,7 @@ export default function LoginPage() {
           <CardDescription>Enter your credentials to access your inventory</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-4" suppressHydrationWarning>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" placeholder="manager@example.com" required />
