@@ -37,26 +37,16 @@ export default function ResetPasswordPage() {
     }
 
     const emailToReset = localStorage.getItem('emailToReset');
-    if (!emailToReset) {
-      setError('No user session found for password reset. Please start over.');
-      // Redirect to forgot-password, as something went wrong
-      setTimeout(() => router.push('/forgot-password'), 2000);
-      return;
-    }
-
     const storedUsers = localStorage.getItem('users');
     let users = storedUsers ? JSON.parse(storedUsers) : [];
 
     const userIndex = users.findIndex((user: any) => user.email === emailToReset);
 
-    if (userIndex === -1) {
-        setError('User not found. Please start over.');
-        return;
+    if (userIndex !== -1) {
+        // Update password
+        users[userIndex].password = newPassword;
+        localStorage.setItem('users', JSON.stringify(users));
     }
-
-    // Update password
-    users[userIndex].password = newPassword;
-    localStorage.setItem('users', JSON.stringify(users));
     
     // Clean up
     localStorage.removeItem('emailToReset');
