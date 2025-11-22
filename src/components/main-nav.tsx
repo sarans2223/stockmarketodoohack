@@ -13,7 +13,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
   const pathname = usePathname();
 
   const isOperationsActive = pathname.startsWith('/dashboard/receipts') || pathname.startsWith('/dashboard/deliveries') || pathname.startsWith('/dashboard/adjustments');
-  const [isOperationsOpen, setIsOperationsOpen] = React.useState(false);
+  const [isOperationsOpen, setIsOperationsOpen] = React.useState(isOperationsActive);
 
   const operationsRoutes = [
     {
@@ -96,6 +96,10 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
         icon: <LogOut className="h-4 w-4" />
     }
   ]
+
+  React.useEffect(() => {
+    setIsOperationsOpen(isOperationsActive);
+  }, [pathname, isOperationsActive]);
 
   return (
     <nav className={cn("flex flex-col space-y-1", className)} {...props}>
