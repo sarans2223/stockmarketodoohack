@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, PackageCheck, PackagePlus, Shuffle, SlidersHorizontal, History, Settings, Warehouse, User, LogOut, Building, ChevronsUpDown } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Settings, Warehouse, User, LogOut, Building, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -55,7 +55,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
 
   const otherRoutes = [
      {
-        type: 'separator'
+        type: 'separator' as const
     },
     {
       href: `/dashboard/move-history`,
@@ -70,10 +70,10 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       icon: <Package className="h-4 w-4" />,
     },
     {
-        type: 'separator'
+        type: 'separator' as const
     },
      {
-        type: 'heading',
+        type: 'heading' as const,
         label: 'Settings'
     },
     {
@@ -83,10 +83,10 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       icon: <Warehouse className="h-4 w-4" />,
     },
     {
-        type: 'separator'
+        type: 'separator' as const
     },
      {
-        type: 'heading',
+        type: 'heading' as const,
         label: 'Profile'
     },
     {
@@ -112,8 +112,8 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
                 className={cn(
                     "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:bg-muted/50",
                     route.active
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground"
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
                 >
                 {route.icon}
@@ -125,8 +125,8 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
         <Accordion type="single" collapsible defaultValue={isOperationsActive ? "operations" : undefined} className="w-full">
             <AccordionItem value="operations" className="border-b-0">
                 <AccordionTrigger className={cn(
-                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:no-underline hover:bg-muted/50",
-                    isOperationsActive ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:no-underline",
+                     isOperationsActive ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
                     "[&[data-state=open]>svg:last-child]:rotate-180"
                 )}>
                     <Building className="h-4 w-4" />
@@ -139,10 +139,10 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
                             key={route.href}
                             href={route.href}
                             className={cn(
-                                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:bg-muted/50",
+                                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
                                 route.active
                                 ? "bg-primary/20 text-primary"
-                                : "text-muted-foreground"
+                                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                             )}
                             >
                             {route.icon}
@@ -156,23 +156,21 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
 
 
       {otherRoutes.map((route, index) => {
-        if ('type' in route) {
-            if (route.type === 'heading') {
-                return <h4 key={index} className="px-3 pt-4 pb-1 text-sm font-semibold text-muted-foreground/80">{route.label}</h4>
-            }
-            if (route.type === 'separator') {
-                return <div key={index} className="py-2" />
-            }
+        if (route.type === 'heading') {
+            return <h4 key={index} className="px-3 pt-4 pb-1 text-sm font-semibold text-muted-foreground/80">{route.label}</h4>
+        }
+        if (route.type === 'separator') {
+            return <div key={index} className="py-2" />
         }
         return (
             <Link
             key={route.href}
             href={route.href}
             className={cn(
-                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors hover:bg-muted/50",
+                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
                 route.active
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground"
+                ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
             >
             {route.icon}
