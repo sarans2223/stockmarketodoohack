@@ -1,4 +1,8 @@
+
+'use client';
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Boxes } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -7,6 +11,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Your teammate can add authentication logic here.
+    router.push('/dashboard');
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="mx-auto w-full max-w-sm">
@@ -18,7 +30,7 @@ export default function LoginPage() {
           <CardDescription>Enter your credentials to access your inventory</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4" suppressHydrationWarning>
+          <form onSubmit={handleLogin} className="space-y-4" suppressHydrationWarning>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" placeholder="manager@example.com" required />
@@ -32,13 +44,13 @@ export default function LoginPage() {
               </div>
               <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full as-child">
-              <Link href="/dashboard">Login</Link>
+            <Button type="submit" className="w-full">
+              Login
             </Button>
             <Button variant="outline" className="w-full" asChild>
               <Link href="/signup">Sign up</Link>
             </Button>
-          </div>
+          </form>
         </CardContent>
       </Card>
     </div>
