@@ -23,7 +23,6 @@ import {
   ChartConfig,
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { kpiData, inventoryChartData, recentActivity } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 
 const chartConfig = {
@@ -48,8 +47,8 @@ export default function DashboardPage() {
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{kpiData.totalProducts.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+            <div className="text-2xl font-bold">-</div>
+            <p className="text-xs text-muted-foreground">-</p>
           </CardContent>
         </Card>
         <Card>
@@ -58,8 +57,8 @@ export default function DashboardPage() {
             <PackagePlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+{kpiData.pendingReceipts}</div>
-            <p className="text-xs text-muted-foreground">3 new from suppliers</p>
+            <div className="text-2xl font-bold">-</div>
+            <p className="text-xs text-muted-foreground">-</p>
           </CardContent>
         </Card>
         <Card>
@@ -68,8 +67,8 @@ export default function DashboardPage() {
             <PackageCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{kpiData.pendingDeliveries}</div>
-            <p className="text-xs text-muted-foreground">2 ready for dispatch</p>
+            <div className="text-2xl font-bold">-</div>
+            <p className="text-xs text-muted-foreground">-</p>
           </CardContent>
         </Card>
         <Card>
@@ -78,8 +77,8 @@ export default function DashboardPage() {
             <Shuffle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{kpiData.scheduledTransfers}</div>
-            <p className="text-xs text-muted-foreground">For this week</p>
+            <div className="text-2xl font-bold">-</div>
+            <p className="text-xs text-muted-foreground">-</p>
           </CardContent>
         </Card>
         <Card className="lg:col-span-1">
@@ -91,8 +90,8 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{kpiData.lowStock} Low Stock</div>
-            <p className="text-xs text-muted-foreground">{kpiData.outOfStock} Out of Stock</p>
+            <div className="text-2xl font-bold">- Low Stock</div>
+            <p className="text-xs text-muted-foreground">- Out of Stock</p>
           </CardContent>
         </Card>
       </div>
@@ -104,7 +103,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
              <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                <BarChart accessibilityLayer data={inventoryChartData}>
+                <BarChart accessibilityLayer data={[]}>
                   <CartesianGrid vertical={false} />
                   <XAxis
                     dataKey="date"
@@ -141,20 +140,9 @@ export default function DashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {recentActivity.map((activity) => (
-                  <TableRow key={activity.id}>
-                    <TableCell>
-                      <div className="font-medium">{activity.type}</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        {activity.id}
-                      </div>
-                    </TableCell>
-                    <TableCell>{activity.details}</TableCell>
-                    <TableCell>
-                      <Badge variant={activity.status === 'Completed' ? 'default' : 'secondary'} className={activity.status === 'Completed' ? 'bg-green-100 text-green-800' : ''}>{activity.status}</Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center">No recent activity</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </CardContent>
