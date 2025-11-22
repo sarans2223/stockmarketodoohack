@@ -1,3 +1,4 @@
+
 "use client";
 
 import { ArrowUpRight, Package, PackageCheck, PackagePlus, Clock, XCircle, Shuffle } from "lucide-react";
@@ -24,6 +25,7 @@ import {
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Badge } from "@/components/ui/badge";
+import { kpiData, inventoryChartData, recentActivity } from "@/lib/data";
 
 const chartConfig = {
   incoming: {
@@ -47,8 +49,8 @@ export default function DashboardPage() {
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">-</div>
-            <p className="text-xs text-muted-foreground">-</p>
+            <div className="text-2xl font-bold">{kpiData.totalProducts.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">Across all warehouses</p>
           </CardContent>
         </Card>
         <Card>
@@ -57,8 +59,8 @@ export default function DashboardPage() {
             <PackagePlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">-</div>
-            <p className="text-xs text-muted-foreground">-</p>
+            <div className="text-2xl font-bold">+{kpiData.pendingReceipts}</div>
+            <p className="text-xs text-muted-foreground">From suppliers</p>
           </CardContent>
         </Card>
         <Card>
@@ -67,8 +69,8 @@ export default function DashboardPage() {
             <PackageCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">-</div>
-            <p className="text-xs text-muted-foreground">-</p>
+            <div className="text-2xl font-bold">+{kpiData.pendingDeliveries}</div>
+            <p className="text-xs text-muted-foreground">To customers</p>
           </CardContent>
         </Card>
         <Card>
@@ -77,8 +79,8 @@ export default function DashboardPage() {
             <Shuffle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">-</div>
-            <p className="text-xs text-muted-foreground">-</p>
+            <div className="text-2xl font-bold">{kpiData.scheduledTransfers}</div>
+            <p className="text-xs text-muted-foreground">Between locations</p>
           </CardContent>
         </Card>
         <Card className="lg:col-span-1">
@@ -90,8 +92,8 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">- Low Stock</div>
-            <p className="text-xs text-muted-foreground">- Out of Stock</p>
+            <div className="text-2xl font-bold">{kpiData.lowStock} Low Stock</div>
+            <p className="text-xs text-muted-foreground">{kpiData.outOfStock} Out of Stock</p>
           </CardContent>
         </Card>
       </div>
@@ -103,7 +105,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
              <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                <BarChart accessibilityLayer data={[]}>
+                <BarChart accessibilityLayer data={inventoryChartData}>
                   <CartesianGrid vertical={false} />
                   <XAxis
                     dataKey="date"
@@ -140,9 +142,18 @@ export default function DashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell colSpan={3} className="text-center">No recent activity</TableCell>
-                </TableRow>
+                {recentActivity.slice(0,5).map(activity => (
+                    <TableRow key={activity.id}>
+                        <TableCell>
+                            <div className="font-medium">{activity.type}</div>
+                            <div className="text-xs text-muted-foreground">{activity.date}</div>
+                        </TableCell>
+                        <TableCell>{activity.details}</TableCell>
+                        <TableCell>
+                             <Badge variant={activity.status === 'Completed' ? 'default' : 'secondary'}>{activity.status}</Badge>
+                        </TableCell>
+                    </TableRow>
+                ))}
               </TableBody>
             </Table>
           </CardContent>
