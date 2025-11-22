@@ -35,8 +35,8 @@ export default function LoginPage() {
             <Button type="submit" className="w-full as-child">
               <Link href="/dashboard">Login</Link>
             </Button>
-            <Button variant="outline" className="w-full">
-              Sign up
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/signup">Sign up</Link>
             </Button>
           </div>
         </CardContent>
