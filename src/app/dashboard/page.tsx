@@ -2,6 +2,7 @@
 "use client";
 
 import { Package, PackageCheck, PackagePlus, Clock, XCircle, Shuffle, BarChart2 } from "lucide-react";
+import * as React from "react";
 import {
   Card,
   CardContent,
@@ -26,6 +27,8 @@ import {
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { kpiData, inventoryChartData, recentActivity } from "@/lib/data";
+import { ActivityFilters } from "./activity-filters";
+import type { Activity } from "@/lib/types";
 
 const inventoryFlowChartConfig = {
   Incoming: {
@@ -56,6 +59,28 @@ const kpiChartData = [
 
 
 export default function DashboardPage() {
+  const [filters, setFilters] = React.useState({
+    type: "",
+    status: "",
+  });
+
+  const handleFilterChange = (key: "type" | "status", value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value === prev[key] ? "" : value }));
+  };
+
+  const clearFilters = () => {
+    setFilters({ type: "", status: "" });
+  };
+
+  const filteredActivity = React.useMemo(() => {
+    return recentActivity.filter((activity: Activity) => {
+      const typeMatch = filters.type ? activity.type === filters.type : true;
+      const statusMatch = filters.status ? activity.status === filters.status : true;
+      return typeMatch && statusMatch;
+    });
+  }, [filters]);
+
+
   return (
     <>
        <div className="grid gap-4 md:gap-8 lg:grid-cols-1">
@@ -128,6 +153,11 @@ export default function DashboardPage() {
             <CardDescription>A log of the latest inventory movements.</CardDescription>
           </CardHeader>
           <CardContent>
+            <ActivityFilters 
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              clearFilters={clearFilters}
+            />
             <Table>
               <TableHeader>
                 <TableRow>
@@ -137,7 +167,7 @@ export default function DashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {recentActivity.slice(0,5).map(activity => (
+                {filteredActivity.slice(0,5).map(activity => (
                     <TableRow key={activity.id}>
                         <TableCell>
                             <div className="font-medium">{activity.type}</div>
@@ -145,7 +175,7 @@ export default function DashboardPage() {
                         </TableCell>
                         <TableCell>{activity.details}</TableCell>
                         <TableCell>
-                             <Badge variant={activity.status === 'Completed' ? 'default' : 'secondary'}>{activity.status}</Badge>
+                             <Badge variant={activity.status === 'Done' ? 'default' : 'secondary'}>{activity.status}</Badge>
                         </TableCell>
                     </TableRow>
                 ))}

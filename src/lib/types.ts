@@ -18,7 +18,7 @@ export type Activity = {
     id: string;
     type: 'Receipt' | 'Delivery' | 'Transfer' | 'Adjustment';
     date: string;
-    status: 'Completed' | 'Pending' | 'In Transit';
+    status: 'Draft' | 'Waiting' | 'Ready' | 'Done' | 'Canceled';
     details: string;
 };
 
