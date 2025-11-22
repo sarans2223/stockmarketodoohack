@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Warehouse, User, LogOut, ChevronDown, Settings, PlusCircle, Map, Shapes, Repeat } from "lucide-react";
+import { Home, Package, PackageCheck, PackagePlus, SlidersHorizontal, History, Warehouse, User, LogOut, ChevronDown, PlusCircle, Map, Shapes, Repeat } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -15,33 +15,16 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
   const isOperationsActive = pathname.startsWith('/dashboard/receipts') || pathname.startsWith('/dashboard/deliveries') || pathname.startsWith('/dashboard/adjustments');
   const [isOperationsOpen, setIsOperationsOpen] = React.useState(isOperationsActive);
 
-  const isAdminActive = pathname.startsWith('/dashboard/admin');
-  const [isAdminOpen, setIsAdminOpen] = React.useState(isAdminActive);
+  const isDashboardActive = pathname.startsWith('/dashboard/admin') || pathname === '/dashboard';
+  const [isDashboardOpen, setIsDashboardOpen] = React.useState(isDashboardActive);
 
-  const operationsRoutes = [
+  const dashboardRoutes = [
     {
-      href: `/dashboard/receipts`,
-      label: "Receipts",
-      active: pathname.startsWith(`/dashboard/receipts`),
-      icon: <PackagePlus className="h-4 w-4" />,
-      badge: "12",
+      href: `/dashboard`,
+      label: "Overview",
+      active: pathname === `/dashboard`,
+      icon: <Home className="h-4 w-4" />,
     },
-    {
-      href: `/dashboard/deliveries`,
-      label: "Delivery Orders",
-      active: pathname.startsWith(`/dashboard/deliveries`),
-      icon: <PackageCheck className="h-4 w-4" />,
-      badge: "8",
-    },
-    {
-      href: `/dashboard/adjustments`,
-      label: "Inventory Adjustment",
-      active: pathname.startsWith(`/dashboard/adjustments`),
-      icon: <SlidersHorizontal className="h-4 w-4" />,
-    },
-  ];
-
-  const adminRoutes = [
     {
       href: `/dashboard/admin/create-product`,
       label: "Create Products",
@@ -68,12 +51,26 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
     },
   ];
 
-  const mainRoutes = [
-     {
-      href: `/dashboard`,
-      label: "Dashboard",
-      active: pathname === `/dashboard`,
-      icon: <Home className="h-4 w-4" />,
+  const operationsRoutes = [
+    {
+      href: `/dashboard/receipts`,
+      label: "Receipts",
+      active: pathname.startsWith(`/dashboard/receipts`),
+      icon: <PackagePlus className="h-4 w-4" />,
+      badge: "12",
+    },
+    {
+      href: `/dashboard/deliveries`,
+      label: "Delivery Orders",
+      active: pathname.startsWith(`/dashboard/deliveries`),
+      icon: <PackageCheck className="h-4 w-4" />,
+      badge: "8",
+    },
+    {
+      href: `/dashboard/adjustments`,
+      label: "Inventory Adjustment",
+      active: pathname.startsWith(`/dashboard/adjustments`),
+      icon: <SlidersHorizontal className="h-4 w-4" />,
     },
   ];
 
@@ -132,28 +129,51 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
   }, [pathname, isOperationsActive]);
   
   React.useEffect(() => {
-    setIsAdminOpen(isAdminActive);
-  }, [pathname, isAdminActive]);
+    setIsDashboardOpen(isDashboardActive);
+  }, [pathname, isDashboardActive]);
 
 
   return (
     <nav className={cn("flex flex-col space-y-1", className)} {...props}>
-      {mainRoutes.map((route) => (
-        <Link
-            key={route.href}
-            href={route.href}
+      <div>
+        <button
+          onClick={() => setIsDashboardOpen(!isDashboardOpen)}
+          className={cn(
+            "flex w-full items-center justify-between rounded-lg px-3 py-2 text-base font-medium transition-colors",
+            isDashboardActive
+              ? "text-foreground bg-muted/60"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+          )}
+        >
+          <span className="font-semibold text-muted-foreground/80">Dashboard</span>
+          <ChevronDown
             className={cn(
-                "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
-                route.active
-                ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              "h-5 w-5 text-muted-foreground transition-transform",
+              isDashboardOpen && "rotate-180"
             )}
-            >
-            {route.icon}
-            <span className="flex-1">{route.label}</span>
-            {'badge' in route && route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
-        </Link>
-      ))}
+          />
+        </button>
+        {isDashboardOpen && (
+          <div className="mt-1 flex flex-col space-y-1 pl-4">
+            {dashboardRoutes.map((route) => (
+               <Link
+                key={route.href}
+                href={route.href}
+                className={cn(
+                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
+                    route.active
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                )}
+                >
+                {route.icon}
+                <span className="flex-1">{route.label}</span>
+                {'badge' in route && route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div>
         <button
@@ -176,46 +196,6 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
         {isOperationsOpen && (
           <div className="mt-1 flex flex-col space-y-1 pl-4">
             {operationsRoutes.map((route) => (
-               <Link
-                key={route.href}
-                href={route.href}
-                className={cn(
-                    "flex items-center space-x-3 rounded-lg px-3 py-2 text-base font-medium transition-colors",
-                    route.active
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                )}
-                >
-                {route.icon}
-                <span className="flex-1">{route.label}</span>
-                {'badge' in route && route.badge && <Badge variant={route.active ? "secondary" : "default"}>{route.badge}</Badge>}
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div>
-        <button
-          onClick={() => setIsAdminOpen(!isAdminOpen)}
-          className={cn(
-            "flex w-full items-center justify-between rounded-lg px-3 py-2 text-base font-medium transition-colors",
-            isAdminActive
-              ? "text-foreground bg-muted/60"
-              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-          )}
-        >
-          <span className="font-semibold text-muted-foreground/80">Admin</span>
-          <ChevronDown
-            className={cn(
-              "h-5 w-5 text-muted-foreground transition-transform",
-              isAdminOpen && "rotate-180"
-            )}
-          />
-        </button>
-        {isAdminOpen && (
-          <div className="mt-1 flex flex-col space-y-1 pl-4">
-            {adminRoutes.map((route) => (
                <Link
                 key={route.href}
                 href={route.href}
