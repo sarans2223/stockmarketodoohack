@@ -13,11 +13,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
   const pathname = usePathname();
 
   const isOperationsActive = pathname.startsWith('/dashboard/receipts') || pathname.startsWith('/dashboard/deliveries') || pathname.startsWith('/dashboard/adjustments');
-  const [isOperationsOpen, setIsOperationsOpen] = React.useState(isOperationsActive);
-
-  React.useEffect(() => {
-    setIsOperationsOpen(isOperationsActive);
-  }, [pathname, isOperationsActive]);
+  const [isOperationsOpen, setIsOperationsOpen] = React.useState(false);
 
   const operationsRoutes = [
     {
